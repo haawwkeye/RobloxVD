@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+		 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	</head>
+	<body>
+		<div id="page-start" class="container">
+			
+		</div>
+		<div id="page-verify" class="container">
+			
+		</div>
+		<div id="page-use" class="container">
+			<a class="btn-floating btn-large waves-effect waves-light red" href="javascript:ses.start()"><i class="material-icons">mic_none</i></a>
+			<input id="user" placeholder="put your own username into here and press the big red button above to start :)">
+		</div>
+	</body>
+</html>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+	var user = "";
+	var ses = new webkitSpeechRecognition();
+	ses.lang = "en-us";
+	ses.continuous = true;
+	ses.interimResults = true;
+	ses.onresult = function(e) {
+		if (event.results.length>0) {
+			result = event.results[event.results.length-1];
+			if (result.isFinal) {
+				SendResults(result[0].transcript);
+			};
+		};
+	};
+	function SendResults(result) {
+		console.log(result);
+		//if (user != "") {
+			$.ajax({
+				url : 'http://rbx-vd.ml/update',
+				type : 'POST',
+				data : {username: document.getElementById('user').value, detection:result},
+				dataType:'json',
+				success : function () {},
+				error: function(er) { alert(er); }
+			});
+		//};
+	};
+</script>
