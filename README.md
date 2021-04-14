@@ -57,6 +57,6 @@ You may be using an incorrect ip. Double check everything is all good!
 
 #### "[Object object]"
 Make sure you're opening `localhost`, and not opening the `.html` file in your browser.
-`localhost` will serve `api.html` by itself, but it'll allow for it to connect to the server properly.
+`localhost` will serve `app.html` by itself, but it'll allow for it to connect to the server properly.
 
 If none of these helped, please send me a message on Twitter, Devforum, or GitHub! I'm trying to fix all the issues and doing this will make my job slightly easier :)
