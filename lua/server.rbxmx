@@ -1,0 +1,74 @@
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+	<Meta name="ExplicitAutoJoints">true</Meta>
+	<External>null</External>
+	<External>nil</External>
+	<Item class="Script" referent="RBX2C156C1471BE4C098720D4F1B7C3EDEC">
+		<Properties>
+			<BinaryString name="AttributesSerialize"></BinaryString>
+			<bool name="Disabled">false</bool>
+			<Content name="LinkedSource"><null></null></Content>
+			<string name="Name">VoiceDetectionServer</string>
+			<string name="ScriptGuid">{74339AF5-30F1-4A8F-93CB-42AA4DAA8391}</string>
+			<ProtectedString name="Source"><![CDATA[local YOURIP = "YOURIPHERE"
+
+local HTTP = game:GetService('HttpService')
+local ChatService = game:GetService('Chat')
+
+local LastUsersChat = {}
+
+local Running = true
+local Remote = script.SendVoice
+Remote.Parent = game.ReplicatedStorage
+
+while wait(1.5) and Running do
+	local Req = nil
+	local success, error = pcall(function() Req = HTTP:GetAsync('http://'..YOURIP..'/viewall') end)
+	if Req and success then
+		local Data = HTTP:JSONDecode(Req);
+		for _, user in pairs(Data) do
+			if LastUsersChat[user.name] ~= user.vd then
+				LastUsersChat[user.name] = user.vd
+				local player = game.Players:FindFirstChild(user.name)
+				if player then
+					if not player.PlayerGui:FindFirstChild('VoiceDetectionClient') then
+						local ls = script.VoiceDetectionClient:Clone()
+						ls.Parent = player.PlayerGui
+						ls.Disabled = false
+					end
+					Remote:FireClient(game.Players[user.name], user.vd)
+				end
+			end
+		end
+	else
+		--Running = false
+		print('Failed to connect to server.')
+		wait(3) -- Wait before attempting to connect so it doesn't spam requests
+	end
+end]]></ProtectedString>
+			<int64 name="SourceAssetId">-1</int64>
+			<BinaryString name="Tags"></BinaryString>
+		</Properties>
+		<Item class="LocalScript" referent="RBXF87874E501D24D2E97645DD635A81139">
+			<Properties>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<bool name="Disabled">true</bool>
+				<Content name="LinkedSource"><null></null></Content>
+				<string name="Name">VoiceDetectionClient</string>
+				<string name="ScriptGuid">{E503BCE5-7DB6-44BB-AE66-EA9EAAF9E6C5}</string>
+				<ProtectedString name="Source"><![CDATA[game.ReplicatedStorage.SendVoice.OnClientEvent:Connect(function(said)
+	game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(said, "ALL")
+end)]]></ProtectedString>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+			</Properties>
+		</Item>
+		<Item class="RemoteEvent" referent="RBXA68039179AC241A8BD9AC8D6E36C1983">
+			<Properties>
+				<BinaryString name="AttributesSerialize"></BinaryString>
+				<string name="Name">SendVoice</string>
+				<int64 name="SourceAssetId">-1</int64>
+				<BinaryString name="Tags"></BinaryString>
+			</Properties>
+		</Item>
+	</Item>
+</roblox>
