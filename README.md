@@ -23,7 +23,7 @@ You should be able to open `cmd.cmd` one last time, and type `node serv.js` and 
 At this point, opening `localhost` in your browser should show a large red button with a textbox under.
 If so, then it's worked! Keep this command prompt window open while you're using RobloxVD or it won't work!
 
-To setup your game with RobloxVD, go into the `lua` folder, and find `server.rbxm`.
+To setup your game with RobloxVD, go into the `lua` folder, and find `server.rbxmx`.
 Import that into the game of your choice with RightClick -> Insert from file..
 
 You'll need your global ip for this. You can easily get this by a quick google search!
